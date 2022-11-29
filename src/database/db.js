@@ -11,7 +11,7 @@ try {
   console.log(err);
 }
 
-const db = mongoClient.db("Drivencracy");
+const db = mongoClient.db("drivencracy-db");
 export const pollsCollection = db.collection("polls");
 
 /*
