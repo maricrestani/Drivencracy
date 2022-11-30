@@ -1,6 +1,6 @@
 import { Router } from "express";
-import registerNewPoll from "../controllers/polls.controllers.js";
-import registerPollValidation from "../middlewares/polls.middlewares.js";
+import { registerNewPoll } from "../controllers/polls.controllers.js";
+import { registerPollValidation } from "../middlewares/polls.middlewares.js";
 
 const router = Router();
 

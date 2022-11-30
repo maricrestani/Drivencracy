@@ -1,4 +1,4 @@
-import pollsCollection from "../database/.js";
+import { pollsCollection } from "../database/db.js";
 
 export async function registerNewPoll(req, res) {
   const poll = res.locals.poll;
