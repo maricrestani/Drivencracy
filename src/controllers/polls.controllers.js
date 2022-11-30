@@ -1,13 +1,15 @@
 import { pollsCollection } from "../database/db.js";
 
 export async function registerNewPoll(req, res) {
-  const title = (res.locals.title = title);
-  const expireAt = (res.locals.expireAt = expireAt);
+  const poll = req.body;
+  // const title = res.locals.title;
+  //const expireAt = res.locals.expireAt;
   // const poll = { title, expireAt };
-
+  console.log("poll", poll);
   try {
     await pollsCollection.insertOne({ poll });
-    res.send({ title, expireAt }).status(201);
+    console.log("ver se chega aqui");
+    res.send({ poll }).status(201);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
@@ -17,7 +19,9 @@ export async function registerNewPoll(req, res) {
 export async function returnPolls(req, res) {
   try {
     const polls = await pollsCollection.find({}).toArray();
-    res.send({ polls });
+    console.log("polls");
+    console.log(polls);
+    res.send(polls);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);

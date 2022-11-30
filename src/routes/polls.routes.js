@@ -5,9 +5,9 @@ import {
 } from "../controllers/polls.controllers.js";
 import { registerPollValidation } from "../middlewares/polls.middlewares.js";
 
-const router = Router();
+const pollsRouter = Router();
 
-router.post("/poll", registerPollValidation, registerNewPoll);
-router.get("/poll", returnPolls);
+pollsRouter.post("/poll", registerPollValidation, registerNewPoll);
+pollsRouter.get("/poll", returnPolls);
 
-export default router;
+export default pollsRouter;

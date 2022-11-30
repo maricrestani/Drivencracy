@@ -12,7 +12,5 @@ export function registerPollValidation(req, res, next) {
     expireAt = newExpireAt;
   }
 
-  res.locals.title = title;
-  res.locals.expireAt = expireAt;
   next();
 }
