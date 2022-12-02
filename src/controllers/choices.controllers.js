@@ -12,3 +12,5 @@ export async function registerNewChoice(req, res) {
     res.sendStatus(500);
   }
 }
+
+
