@@ -1,11 +1,17 @@
 import dayjs from "dayjs";
+import { registerPollSchema } from "../models/polls.models.js";
 
 export function registerPollValidation(req, res, next) {
   const { title, expireAt } = req.body;
   let newExpireAt = expireAt;
 
-  if (!title) {
-    return res.status(422).send({ message: error.detail || error.message });
+  const validation = registerPollSchema.validate(req.body, {
+    abortEarly: false,
+  });
+  if (validation.error) {
+    const erros = validation.error.details.map((d) => d.message);
+    res.status(422).send(erros);
+    return;
   }
 
   if (!expireAt) {
