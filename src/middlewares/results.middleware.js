@@ -33,52 +33,37 @@ export async function resultsValidation(req, res, next) {
 
     console.log("choiceIdVotesArray", choiceIdVotesArray);
 
-    // dentro do votes array, quantas vezes cada choice id aparece
-
-    //if votesArray includes cada elemento do choiceIdVotesArray
-
-    const idsInclusosnaChoice = [];
-
+    let votesInThisPoll = [];
     for (let i = 0; i < choiceIdVotesArray.length; i++) {
-      let item = choiceIdVotesArray[i];
-      if (choiceId.includes(item)) {
-        idsInclusosnaChoice.push(item);
+      let vote = JSON.stringify(choiceIdVotesArray[i]);
+
+      for (let i = 0; i < choiceId.length; i++) {
+        let choice = JSON.stringify(choiceId[i]);
+        if (vote === choice) {
+          votesInThisPoll.push(vote);
+        }
       }
     }
 
-    console.log("idinclusos", idsInclusosnaChoice);
-
-    const includes = choiceIdVotesArray.forEach((id) => choiceId.includes(id));
-
-    console.log("includes", includes);
-    // const votesArray = pollChoices.map((item) => item._id);
-    // console.log("choiceiD", choiceId);
-    /*
-    const a1 = [1, 2, 3, 4, 5]
-    const a2 = [100, 200, 300, 4]
-    const isInArray = a1.some(el => a2.includes(el))
-    console.log(isInArray)
-*/
-
-    const a1 = [1, 2, 3, 4, 5, 6];
-    const a2 = [100, 200, 300, 4, 6];
-    //const isInArray = a1.some((el) => a2.includes(el));
-    //console.log("isinarray", isInArray);
+    console.log("votesInThisPoll ", typeof votesInThisPoll, votesInThisPoll);
 
     /*
-    const teste = [];
+   let titlesOfVotesInThisPoll = []
 
-    const witchElement = a1.some((el) => {
-      if (a2.includes(el)) {
-        console.log(el);
-        teste.push(el);
-        return el;
+    for (let i = 0; i < votesInThisPoll.length; i++) {
+      let vote = JSON.stringify(votesInThisPoll[i]);
+
+      for (let i = 0; i < choiceId.length; i++) {
+        let choice = JSON.stringify(choiceId[i]);
+
+        if (vote === choice) {
+          titlesOfVotesInThisPoll.push(vote);
+        }
       }
-    });
-
-    console.log("teste", teste);
+    }
+console.log("titlesOfVotesInThisPoll", titlesOfVotesInThisPoll);
 */
-    /*
+
     function countItems(array) {
       const countMap = Object.create(null);
 
@@ -92,12 +77,13 @@ export async function resultsValidation(req, res, next) {
           countMap[element] += 1;
         }
       }
-      console.log(countMap);
+
+      console.log("here", JSON.parse(JSON.stringify(countMap)));
       return countMap;
     }
 
-    countItems(choiceTitles);
-*/
+    countItems(votesInThisPoll);
+
     // res.send(pollChoices).status(201);
   } catch (err) {
     console.log(err);
