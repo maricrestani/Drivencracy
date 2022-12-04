@@ -22,11 +22,11 @@ export async function returnChoices(req, res) {
       .find({ pollId: ObjectId(id) })
       .toArray();
 
-    if ((pollChoices.length === 0)) {
+    if (pollChoices.length === 0) {
       return res.send("Enquete não existe").status(404);
     }
 
-    res.send(pollChoices).status(201);
+    res.send(pollChoices);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);

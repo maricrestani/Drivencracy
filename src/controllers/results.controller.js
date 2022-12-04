@@ -1,27 +1,63 @@
 import { ObjectId } from "mongodb";
-import { pollsCollection } from "../database/db.js";
+import {
+  choicesCollection,
+  pollsCollection,
+  votesCollection,
+} from "../database/db.js";
 
 export async function returnPollResults(req, res) {
   const { id } = req.params;
 
   try {
-    const poll = await pollsCollection.find({ _id: ObjectId(id) }).toArray();
+    const pollExists = await pollsCollection.findOne({ _id: ObjectId(id) });
 
-   // console.log("poll no controller", poll);
+    if (!pollExists) {
+      return res.send("Enquete não existe").status(404);
+    }
+
+    const pollChoices = await choicesCollection
+      .find({ pollId: ObjectId(id) })
+      .toArray();
+
+    const choiceIdVotesArray = [];
+    const sumVoteOptions = [];
+    let mostVotes = 0;
+    let mostVotedId = 0;
+
+    for (let i = 0; i < pollChoices.length; i++) {
+      const idVoteOption = pollChoices[i]._id;
+
+      choiceIdVotesArray.push(idVoteOption);
+
+      const votesArray = await votesCollection
+        .find({ choiceId: ObjectId(idVoteOption) })
+        .toArray();
+
+      const numVotesInOption = votesArray.length;
+      sumVoteOptions.push(numVotesInOption);
+
+      if (numVotesInOption > mostVotes) {
+        mostVotes = numVotesInOption;
+        mostVotedId = idVoteOption;
+      }
+    }
+
+    const optionTitle = await choicesCollection.findOne({
+      _id: ObjectId(mostVotedId),
+    });
+
+    const result = {
+      _id: id,
+      title: pollExists.title,
+      expireAt: pollExists.expireAt,
+      result: {
+        title: optionTitle.title,
+        votes: mostVotes,
+      },
+    };
+    res.send(result);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
 }
-
-/*
-{
-	_id: "54759eb3c090d83494e2d222",
-	title: "Qual a sua linguagem de programação favorita?"
-	expireAt: "2022-02-14 01:00",
-	result : {
-		title: "Javascript",
-		votes: 487
-	}
-}
-*/

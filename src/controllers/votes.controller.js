@@ -13,3 +13,5 @@ export async function registerNewVote(req, res) {
 
   res.sendStatus(201);
 }
+
+
